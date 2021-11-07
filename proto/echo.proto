@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcJsonTranscondingPerfTest";
+import "google/api/annotations.proto";
+
+package echo;
+
+
+service EchoService {
+
+  rpc EchoWithSmallPayloadByGet (SmallPayloadRequest) returns (SmallPayloadResponse){
+    option (google.api.http) = {
+      get: "/small"
+    }; 
+  }
+
+  rpc EchoWithSmallPayloadByPost (SmallPayloadRequest) returns (SmallPayloadResponse){
+    option (google.api.http) = {
+      post: "/small"
+      body: "*"
+    }; 
+  }
+
+
+  rpc EchoWithMassivePayloadByPost (MassivePayloadRequest) returns (MassivePayloadResponse){
+    option (google.api.http) = {
+      post: "/massive"
+      body: "*"
+    }; 
+  }
+}
+
+
+message SmallPayloadRequest {
+  string Message = 1;
+}
+
+message SmallPayloadResponse {
+  string Message = 1;
+}
+
+
+message MassivePayloadRequest {
+  repeated string StringList = 1;
+	repeated int32 IntList= 2;
+}
+
+message MassivePayloadResponse {
+  repeated string StringList = 1;
+	repeated int32 IntList= 2;
+}
